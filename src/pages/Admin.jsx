@@ -27,6 +27,10 @@ const auditLog = [
 
 const Admin = () => {
   const { enrolments } = useAppContext();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  
   const [activeTab, setActiveTab] = useState(0);
   const [agents, setAgents] = useState(initialAgents);
   const [showAddAgent, setShowAddAgent] = useState(false);
@@ -76,6 +80,51 @@ const Admin = () => {
       }
     </button>
   );
+
+  if (!isAuthenticated) {
+    return (
+      <div className="flex items-center justify-center min-h-[70vh]">
+        <div className="glass-panel p-8 max-w-md w-full animate-fade-in text-center space-y-6 border-alertcrimson/20">
+          <div className="flex justify-center mb-2">
+            <div className="w-16 h-16 bg-deepblue-900/40 rounded-full flex items-center justify-center border border-deepblue-500/30">
+              <Lock className="w-8 h-8 text-deepblue-400" />
+            </div>
+          </div>
+          <div>
+            <h2 className="text-2xl font-bold text-slate-100">Admin Access</h2>
+            <p className="text-slate-400 text-sm mt-2">Please enter the administrator password.</p>
+          </div>
+          
+          <form onSubmit={(e) => {
+            e.preventDefault();
+            if (password === 'admin123') {
+              setIsAuthenticated(true);
+              setError('');
+            } else {
+              setError('Incorrect password');
+            }
+          }} className="space-y-4 pt-2">
+            <div>
+              <input
+                type="password"
+                placeholder="Enter password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full bg-crispslate-900 border border-crispslate-700 rounded-xl px-4 py-3 text-slate-200 focus:outline-none focus:border-deepblue-500 text-center text-lg tracking-widest"
+              />
+              {error && <p className="text-alertcrimson text-sm mt-2 font-semibold">{error}</p>}
+            </div>
+            <button
+              type="submit"
+              className="w-full bg-deepblue-600 hover:bg-deepblue-500 text-white font-semibold py-3 rounded-xl transition-colors shadow-lg shadow-deepblue-600/20"
+            >
+              Unlock Panel
+            </button>
+          </form>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
