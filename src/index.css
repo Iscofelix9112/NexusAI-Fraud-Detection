@@ -1,32 +1,13 @@
 @import "tailwindcss";
 
 @theme {
-  --color-deepblue-50: #eef2ff;
-  --color-deepblue-100: #e0e7ff;
-  --color-deepblue-200: #c7d2fe;
-  --color-deepblue-300: #a5b4fc;
-  --color-deepblue-400: #818cf8;
-  --color-deepblue-500: #6366f1;
-  --color-deepblue-600: #4f46e5;
-  --color-deepblue-700: #4338ca;
-  --color-deepblue-800: #3730a3;
-  --color-deepblue-900: #312e81;
-  --color-deepblue-950: #0b0f19;
-
-  --color-crispslate-900: #0f172a;
-  --color-crispslate-800: #1e293b;
-  --color-crispslate-700: #334155;
-
-  --color-alertemerald: #10b981;
-  --color-alertcrimson: #ef4444;
-
   --font-sans: 'Inter', sans-serif;
 }
 
 @layer base {
   body {
-    background-color: var(--color-deepblue-950);
-    color: #e2e8f0;
+    background-color: #f3f4f6; /* light gray background */
+    color: #111827; /* dark text */
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
   }
@@ -34,17 +15,14 @@
 
 @layer utilities {
   .glass {
-    background-color: color-mix(in srgb, var(--color-crispslate-900) 60%, transparent);
-    backdrop-filter: blur(12px);
-    border: 1px solid color-mix(in srgb, var(--color-crispslate-700) 50%, transparent);
-    box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+    background-color: white;
+    border-right: 1px solid #e5e7eb;
   }
   .glass-panel {
-    background-color: color-mix(in srgb, var(--color-crispslate-800) 80%, transparent);
-    backdrop-filter: blur(16px);
-    border: 1px solid color-mix(in srgb, var(--color-crispslate-700) 50%, transparent);
-    box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.4);
-    border-radius: 0.75rem;
+    background-color: white;
+    border: 1px solid #f3f4f6;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+    border-radius: 1rem;
   }
 }
 

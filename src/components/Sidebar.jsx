@@ -1,75 +1,101 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, UserPlus, ShieldAlert, BarChart3, Activity, Lock } from 'lucide-react';
+import { LayoutDashboard, Users, ShieldAlert, BarChart3, Settings, HelpCircle, MessageSquare } from 'lucide-react';
 import clsx from 'clsx';
 
-const Sidebar = () => {
-  const links = [
-    { name: 'Overview',      to: '/',        icon: LayoutDashboard },
-    { name: 'New Enrolment', to: '/new',      icon: UserPlus        },
-    { name: 'Fraud Review',  to: '/review',   icon: ShieldAlert     },
-    { name: 'Metrics',       to: '/metrics',  icon: BarChart3       },
-  ];
-
-  const adminLinks = [
-    { name: 'Admin Panel',   to: '/admin',    icon: Lock            },
+const Sidebar = ({ isOpen, setIsOpen }) => {
+  const menuSections = [
+    {
+      title: 'MENU',
+      links: [
+        { name: 'Dashboard', to: '/', icon: LayoutDashboard },
+        { name: 'Report',    to: '/review', icon: ShieldAlert },
+        { name: 'Consumer',  to: '/new', icon: Users },
+      ]
+    },
+    {
+      title: 'FINANCIAL',
+      links: [
+        { name: 'Metrics', to: '/metrics', icon: BarChart3 },
+      ]
+    },
+    {
+      title: 'TOOLS',
+      links: [
+        { name: 'Settings', to: '/admin', icon: Settings },
+        { name: 'Feedback', to: '#', icon: MessageSquare },
+        { name: 'Help',     to: '#', icon: HelpCircle },
+      ]
+    }
   ];
 
   return (
-    <div className="w-64 h-screen glass border-r border-crispslate-700/50 flex flex-col">
-      <div className="p-6 flex items-center space-x-3 border-b border-crispslate-700/50">
-        <Activity className="text-alertemerald w-8 h-8" />
-        <span className="text-xl font-bold tracking-wider text-slate-100 uppercase">
-          Nexus<span className="text-alertemerald">AI</span>
-        </span>
-      </div>
+    <>
+      {/* Mobile overlay */}
+      {isOpen && (
+        <div 
+          className="fixed inset-0 bg-black/20 z-40 lg:hidden"
+          onClick={() => setIsOpen(false)}
+        />
+      )}
       
-      <nav className="flex-1 py-6 px-4 space-y-2">
-        {links.map((link) => (
-          <NavLink
-            key={link.to}
-            to={link.to}
-            end={link.to === '/'}
-            className={({ isActive }) =>
-              clsx(
-                'flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 group',
-                isActive
-                  ? 'bg-deepblue-600/20 text-deepblue-400 border border-deepblue-500/30'
-                  : 'text-slate-400 hover:text-slate-100 hover:bg-crispslate-800'
-              )
-            }
-          >
-            <link.icon className="w-5 h-5 group-hover:scale-110 transition-transform duration-200" />
-            <span className="font-medium">{link.name}</span>
-          </NavLink>
-        ))}
+      {/* Sidebar */}
+      <div className={clsx(
+        "fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-gray-100 flex flex-col transition-transform duration-300 lg:static lg:translate-x-0",
+        isOpen ? "translate-x-0" : "-translate-x-full"
+      )}>
+        <div className="p-6 flex items-center space-x-2 border-b border-transparent">
+          <div className="w-auto px-3 h-8 bg-black rounded-lg text-white font-bold flex items-center justify-center text-sm tracking-wide">boards</div>
+        </div>
+        
+        <nav className="flex-1 py-4 px-4 overflow-y-auto space-y-6">
+          {menuSections.map((section, idx) => (
+            <div key={idx}>
+              <h3 className="px-4 text-[10px] font-bold text-gray-400 tracking-widest mb-3 uppercase">{section.title}</h3>
+              <div className="space-y-1">
+                {section.links.map((link) => (
+                  <NavLink
+                    key={link.name}
+                    to={link.to}
+                    end={link.to === '/'}
+                    className={({ isActive }) =>
+                      clsx(
+                        'flex items-center space-x-3 px-4 py-2.5 rounded-full transition-all duration-200 group text-sm font-medium',
+                        isActive && link.to !== '#'
+                          ? 'bg-brand-green text-white shadow-md'
+                          : 'text-gray-500 hover:text-brand-green hover:bg-gray-50'
+                      )
+                    }
+                  >
+                    <link.icon className={clsx("w-5 h-5", link.to === '#' && "opacity-50")} />
+                    <span>{link.name}</span>
+                  </NavLink>
+                ))}
+              </div>
+            </div>
+          ))}
+        </nav>
 
-        <div className="border-t border-crispslate-700/50 my-3" />
-
-        {adminLinks.map((link) => (
-          <NavLink
-            key={link.to}
-            to={link.to}
-            className={({ isActive }) =>
-              clsx(
-                'flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 group',
-                isActive
-                  ? 'bg-yellow-500/10 text-yellow-400 border border-yellow-500/20'
-                  : 'text-slate-400 hover:text-yellow-300 hover:bg-crispslate-800'
-              )
-            }
-          >
-            <link.icon className="w-5 h-5 group-hover:scale-110 transition-transform duration-200" />
-            <span className="font-medium">{link.name}</span>
-          </NavLink>
-        ))}
-      </nav>
-      
-      <div className="p-4 m-4 glass-panel flex items-center space-x-3 text-sm">
-        <div className="w-2 h-2 rounded-full bg-alertemerald animate-pulse"></div>
-        <span className="text-slate-300">System Online</span>
+        {/* Upgrade Pro Card */}
+        <div className="p-4">
+          <div className="bg-black text-white rounded-2xl p-5 relative overflow-hidden shadow-lg">
+            <div className="relative z-10">
+              <div className="w-8 h-8 bg-brand-green rounded-full flex items-center justify-center mb-3">
+                <span className="font-serif italic font-bold">L</span>
+              </div>
+              <h4 className="font-semibold text-lg mb-1">Upgrade Pro</h4>
+              <p className="text-xs text-gray-400 mb-4">Discover the benefit of an upgraded account</p>
+              <button className="w-full bg-brand-green hover:bg-brand-green/90 text-white text-sm font-medium py-2 rounded-xl transition-colors">
+                Upgrade $560
+              </button>
+            </div>
+            {/* Background pattern */}
+            <div className="absolute -right-4 -bottom-4 w-24 h-24 border border-gray-700/50 rounded-full opacity-50 pointer-events-none" />
+            <div className="absolute -left-6 top-8 w-16 h-16 border border-gray-700/50 rounded-full opacity-50 pointer-events-none" />
+          </div>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
